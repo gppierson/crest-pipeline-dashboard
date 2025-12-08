@@ -4,16 +4,35 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --border: 214.3 31.8% 91.4%;
-    --radius: 0.5rem;
+    --background: 3 7% 12%; /* #030712 */
+    --foreground: 210 40% 98%; /* #f9fafb */
+    
+    --card: 217 19% 27%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 3 7% 12%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 151 55% 42%; /* #34D399 */
+    --primary-foreground: 3 7% 12%;
+    
+    --secondary: 217 19% 27%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217 19% 27%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 217 19% 27%;
+    --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 19% 27%;
+    --input: 217 19% 27%;
+    --ring: 151 55% 42%;
+    
+    --radius: 0.75rem;
   }
 }
 
@@ -22,67 +41,56 @@
     @apply border-border;
   }
   body {
-    @apply bg-gradient-to-br from-gray-50 via-gray-50 to-primary-50/30 text-foreground;
+    @apply bg-[url('/grid.svg')] bg-fixed bg-cover bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
   }
 }
 
-@layer components {
-  /* Glass morphism effect */
+@layer utilities {
   .glass {
-    @apply bg-white/80 backdrop-blur-sm;
+    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-lg;
   }
   
-  .glass-strong {
-    @apply bg-white/90 backdrop-blur-md;
+  .glass-card {
+    @apply bg-gray-900/60 backdrop-blur-md border border-gray-800/50 hover:border-gray-700/50 hover:bg-gray-900/80 transition-all duration-300;
   }
 
-  /* Enhanced card styles */
-  .card-elevated {
-    @apply bg-white rounded-xl shadow-card hover:shadow-card-hover transition-all duration-300;
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400;
   }
   
-  .card-gradient {
-    @apply relative overflow-hidden;
-  }
-  
-  .card-gradient::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-white to-gray-50 opacity-60;
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400;
   }
 
-  /* Button enhancements */
-  .btn-primary {
-    @apply bg-gradient-primary text-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 font-medium;
-  }
-  
-  .btn-secondary {
-    @apply bg-white text-gray-700 px-4 py-2 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 font-medium;
-  }
-
-  /* Input enhancements */
-  .input-enhanced {
-    @apply w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-white;
-  }
-  
-  .input-enhanced:focus {
-    @apply shadow-sm;
-  }
-
-  /* Smooth scroll */
-  .scroll-smooth {
-    scroll-behavior: smooth;
-  }
-  
+  /* Custom Scrollbar */
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   
   .scrollbar-thin::-webkit-scrollbar-track {
-    @apply bg-gray-100 rounded-full;
+    @apply bg-gray-900/50 rounded-full;
   }
   
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded-full hover:bg-gray-400;
+    @apply bg-gray-700 rounded-full hover:bg-gray-600 transition-colors;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative overflow-hidden bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-medium 
+    hover:opacity-90 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-emerald-900/20
+    after:absolute after:inset-0 after:bg-white/20 after:translate-y-full hover:after:translate-y-0 after:transition-transform after:duration-300;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-800/50 text-white border border-gray-700/50 px-5 py-2.5 rounded-lg font-medium 
+    hover:bg-gray-800 hover:border-gray-600 active:scale-[0.98] transition-all duration-200;
+  }
+
+  .input-dark {
+    @apply bg-gray-900/50 border border-gray-800 text-white placeholder:text-gray-500 rounded-lg px-4 py-2.5
+    focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200;
   }
 }

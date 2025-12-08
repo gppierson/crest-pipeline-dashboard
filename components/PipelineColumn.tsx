@@ -15,31 +15,24 @@ interface PipelineColumnProps {
 
 export function PipelineColumn({ stage, deals, onDealClick, onRefresh }: PipelineColumnProps) {
   return (
-    <div className="flex-shrink-0 w-80 animate-fade-in">
-      <div className="bg-white rounded-xl border border-gray-100 shadow-card overflow-hidden">
-        {/* Gradient header */}
-        <div className={`${stage.gradient || stage.color} text-white px-5 py-4 relative overflow-hidden`}>
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-          <div className="relative">
-            <div className="flex items-center justify-between mb-1">
-              <h3 className="font-bold text-lg">{stage.label}</h3>
-              <div className="bg-white/20 backdrop-blur-sm px-2.5 py-1 rounded-full">
-                <span className="text-sm font-semibold">{deals.length}</span>
-              </div>
-            </div>
-            <p className="text-xs opacity-90">Active in pipeline</p>
+    <div className="flex-shrink-0 w-80 animate-fade-in flex flex-col h-full">
+      <div className="flex flex-col h-full bg-gray-900/30 backdrop-blur-sm rounded-xl border border-white/5 shadow-inner transition-colors hover:border-white/10 overflow-hidden">
+        {/* Header */}
+        <div className="px-4 py-4 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+          <div className="flex items-center gap-3">
+            <div className={`w-2.5 h-2.5 rounded-full ${stage.gradient} shadow-[0_0_10px_rgba(0,0,0,0.5)]`} />
+            <h3 className="font-heading font-semibold text-gray-200 tracking-wide text-sm">{stage.label}</h3>
           </div>
+          <span className="text-xs font-mono font-medium text-gray-500 bg-black/20 px-2.5 py-1 rounded-full border border-white/5">
+            {deals.length}
+          </span>
         </div>
-        
+
         {/* Deals list */}
-        <div className="p-3 space-y-3 max-h-[calc(100vh-320px)] overflow-y-auto scrollbar-thin bg-gray-50/50">
+        <div className="p-3 space-y-3 flex-1 overflow-y-auto scrollbar-thin">
           {deals.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
-                <span className="text-2xl">📋</span>
-              </div>
-              <p className="text-gray-400 text-sm font-medium">No deals yet</p>
-              <p className="text-gray-400 text-xs mt-1">Drag or add deals here</p>
+            <div className="h-32 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-xl m-2 bg-white/[0.01]">
+              <p className="text-gray-600 text-xs font-medium">No deals</p>
             </div>
           ) : (
             deals.map((deal) => (
