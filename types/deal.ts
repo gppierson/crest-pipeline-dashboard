@@ -1,4 +1,4 @@
-export type DealStatus = 
+export type DealStatus =
   | 'listed'
   | 'under-contract'
   | 'closed-won'
@@ -13,6 +13,7 @@ export interface Deal {
   my_share: number;
   status: DealStatus;
   estimated_close_date?: string;
+  actual_close_date?: string;
   notes?: string;
   created_at: string;
   updated_at: string;
@@ -25,5 +26,6 @@ export interface DealFormData {
   my_share: number;
   status: DealStatus;
   estimated_close_date?: string;
+  actual_close_date?: string;
   notes?: string;
 }

@@ -25,6 +25,7 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
     my_share: 40,
     status: 'listed',
     estimated_close_date: '',
+    actual_close_date: '',
     notes: '',
   });
 
@@ -40,6 +41,7 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
         my_share: deal.my_share,
         status: deal.status,
         estimated_close_date: deal.estimated_close_date || '',
+        actual_close_date: deal.actual_close_date || '',
         notes: deal.notes || '',
       });
     } else {
@@ -50,6 +52,7 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
         my_share: 40,
         status: 'listed',
         estimated_close_date: '',
+        actual_close_date: '',
         notes: '',
       });
     }
@@ -199,16 +202,31 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Estimated Close Date
-            </label>
-            <input
-              type="date"
-              value={formData.estimated_close_date || ''}
-              onChange={(e) => setFormData({ ...formData, estimated_close_date: e.target.value })}
-              className="input-enhanced w-full"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Estimated Close Date
+              </label>
+              <input
+                type="date"
+                value={formData.estimated_close_date || ''}
+                onChange={(e) => setFormData({ ...formData, estimated_close_date: e.target.value })}
+                className="input-enhanced w-full"
+              />
+            </div>
+            {formData.status === 'closed-won' && (
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Actual Close Date
+                </label>
+                <input
+                  type="date"
+                  value={formData.actual_close_date || ''}
+                  onChange={(e) => setFormData({ ...formData, actual_close_date: e.target.value })}
+                  className="input-enhanced w-full"
+                />
+              </div>
+            )}
           </div>
 
           <div>
