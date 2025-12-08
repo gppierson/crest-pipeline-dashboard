@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Target, TrendingUp, CheckCircle2, DollarSign, Briefcase } from 'lucide-react';
 import { Deal, DealStatus } from '@/types/deal';
 import { getDeals, calculateCommission } from '@/lib/storage';
 import { formatCurrency } from '@/lib/utils';
@@ -9,12 +9,11 @@ import { PipelineColumn } from '@/components/PipelineColumn';
 import { AddDealModal } from '@/components/AddDealModal';
 import { MetricsCard } from '@/components/MetricsCard';
 
-const PIPELINE_STAGES: { status: DealStatus; label: string; color: string }[] = [
-  { status: 'lead', label: 'Leads', color: 'bg-gray-500' },
-  { status: 'qualification', label: 'Qualification', color: 'bg-blue-500' },
-  { status: 'under-contract', label: 'Under Contract', color: 'bg-yellow-500' },
-  { status: 'closed-won', label: 'Closed Won', color: 'bg-green-500' },
-  { status: 'closed-lost', label: 'Closed Lost', color: 'bg-red-500' },
+const PIPELINE_STAGES: { status: DealStatus; label: string; color: string; gradient: string }[] = [
+  { status: 'listed', label: 'Listed', color: 'bg-blue-500', gradient: 'bg-gradient-blue' },
+  { status: 'under-contract', label: 'Under Contract', color: 'bg-amber-500', gradient: 'bg-gradient-amber' },
+  { status: 'closed-won', label: 'Closed Won', color: 'bg-green-500', gradient: 'bg-gradient-primary' },
+  { status: 'lost', label: 'Lost', color: 'bg-red-500', gradient: 'bg-gradient-rose' },
 ];
 
 export default function Dashboard() {
@@ -32,7 +31,7 @@ export default function Dashboard() {
 
   const metrics = useMemo(() => {
     const activeDeals = deals.filter(d => 
-      !['closed-won', 'closed-lost'].includes(d.status)
+      !['closed-won', 'lost'].includes(d.status)
     );
     
     const wonDeals = deals.filter(d => d.status === 'closed-won');
@@ -55,60 +54,72 @@ export default function Dashboard() {
   }, [deals]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-primary-50/30">
+      <header className="glass-strong border-b border-gray-200/50 sticky top-0 z-10 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Pipeline Dashboard</h1>
-              <p className="text-sm text-gray-600">Crest Real Estate Sales</p>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent">
+                Pipeline Dashboard
+              </h1>
+              <p className="text-sm text-gray-600 mt-1 font-medium">Crest Real Estate Sales</p>
             </div>
             <button
               onClick={() => {
                 setSelectedDeal(null);
                 setIsModalOpen(true);
               }}
-              className="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary-600 text-white rounded-lg transition-colors"
+              className="btn-primary inline-flex items-center gap-2"
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-5 h-5" />
               Add Deal
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
           <MetricsCard
             title="Total Deals"
             value={metrics.totalDeals.toString()}
-            color="bg-gray-100 text-gray-800"
+            color="text-gray-700"
+            icon={Briefcase}
+            gradient="bg-gradient-to-br from-gray-500 to-gray-600"
           />
           <MetricsCard
             title="Active Deals"
             value={metrics.activeDeals.toString()}
-            color="bg-blue-100 text-blue-800"
+            color="text-blue-600"
+            icon={Target}
+            gradient="bg-gradient-blue"
           />
           <MetricsCard
             title="Won Deals"
             value={metrics.wonDeals.toString()}
-            color="bg-green-100 text-green-800"
+            color="text-green-600"
+            icon={CheckCircle2}
+            gradient="bg-gradient-primary"
           />
           <MetricsCard
             title="Pipeline Value"
             value={formatCurrency(metrics.totalPipeline)}
-            color="bg-yellow-100 text-yellow-800"
+            color="text-amber-600"
+            icon={TrendingUp}
+            gradient="bg-gradient-amber"
           />
           <MetricsCard
             title="Closed Value"
             value={formatCurrency(metrics.totalClosed)}
-            color="bg-green-100 text-green-800"
+            color="text-primary-600"
+            icon={DollarSign}
+            gradient="bg-gradient-primary"
           />
         </div>
 
         {/* Pipeline Board */}
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-5 overflow-x-auto pb-6 scrollbar-thin">
           {PIPELINE_STAGES.map((stage) => (
             <PipelineColumn
               key={stage.status}

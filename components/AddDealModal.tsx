@@ -11,11 +11,10 @@ interface AddDealModalProps {
 }
 
 const STATUS_OPTIONS: { value: DealStatus; label: string }[] = [
-  { value: 'lead', label: 'Lead' },
-  { value: 'qualification', label: 'Qualification' },
+  { value: 'listed', label: 'Listed' },
   { value: 'under-contract', label: 'Under Contract' },
   { value: 'closed-won', label: 'Closed Won' },
-  { value: 'closed-lost', label: 'Closed Lost' },
+  { value: 'lost', label: 'Lost' },
 ];
 
 export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalProps) {
@@ -23,8 +22,8 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
     address: '',
     listing_price: 0,
     commission_rate: 3,
-    my_share: 50,
-    status: 'lead',
+    my_share: 40,
+    status: 'listed',
     estimated_close_date: '',
     notes: '',
   });
@@ -45,8 +44,8 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
         address: '',
         listing_price: 0,
         commission_rate: 3,
-        my_share: 50,
-        status: 'lead',
+        my_share: 40,
+        status: 'listed',
         estimated_close_date: '',
         notes: '',
       });
@@ -77,20 +76,28 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold">
-            {deal ? 'Edit Deal' : 'Add New Deal'}
-          </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scale-in">
+        <div className="sticky top-0 bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-5 flex justify-between items-center rounded-t-2xl">
+          <div>
+            <h2 className="text-2xl font-bold">
+              {deal ? 'Edit Deal' : 'Add New Deal'}
+            </h2>
+            <p className="text-sm text-primary-100 mt-0.5">
+              {deal ? 'Update deal information' : 'Enter deal details to add to pipeline'}
+            </p>
+          </div>
+          <button 
+            onClick={onClose} 
+            className="text-white/80 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5 bg-gray-50">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Property Address *
             </label>
             <input
@@ -98,34 +105,34 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
               required
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="input-enhanced"
               placeholder="123 Main St, City, State"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Listing Price *
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Sale Price *
               </label>
               <input
                 type="number"
                 required
                 value={formData.listing_price || ''}
                 onChange={(e) => setFormData({ ...formData, listing_price: Number(e.target.value) })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="input-enhanced"
                 placeholder="500000"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Status *
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as DealStatus })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="input-enhanced"
               >
                 {STATUS_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -138,7 +145,7 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Commission Rate (%)
               </label>
               <input
@@ -146,13 +153,13 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
                 step="0.1"
                 value={formData.commission_rate || ''}
                 onChange={(e) => setFormData({ ...formData, commission_rate: Number(e.target.value) })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="input-enhanced"
                 placeholder="3"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 My Share (%)
               </label>
               <input
@@ -160,59 +167,59 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
                 step="1"
                 value={formData.my_share || ''}
                 onChange={(e) => setFormData({ ...formData, my_share: Number(e.target.value) })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="50"
+                className="input-enhanced"
+                placeholder="40"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Estimated Close Date
             </label>
             <input
               type="date"
               value={formData.estimated_close_date || ''}
               onChange={(e) => setFormData({ ...formData, estimated_close_date: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="input-enhanced"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Notes
             </label>
             <textarea
               value={formData.notes || ''}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+              className="input-enhanced resize-none"
               placeholder="Add any additional notes..."
             />
           </div>
 
-          <div className="flex justify-between items-center pt-4 border-t border-gray-200">
+          <div className="flex justify-between items-center pt-6 border-t border-gray-200 bg-white px-6 py-4 -mx-6 -mb-6 rounded-b-2xl">
             {deal && (
               <button
                 type="button"
                 onClick={handleDelete}
-                className="inline-flex items-center px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-lg transition-all hover:scale-[1.02] font-medium"
               >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete
+                <Trash2 className="w-4 h-4" />
+                Delete Deal
               </button>
             )}
             <div className={`flex gap-3 ${!deal ? 'ml-auto' : ''}`}>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="btn-secondary"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-primary hover:bg-primary-600 text-white rounded-lg transition-colors"
+                className="btn-primary"
               >
                 {deal ? 'Update Deal' : 'Add Deal'}
               </button>

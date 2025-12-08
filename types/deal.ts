@@ -1,9 +1,8 @@
 export type DealStatus = 
-  | 'lead'
-  | 'qualification'
+  | 'listed'
   | 'under-contract'
   | 'closed-won'
-  | 'closed-lost';
+  | 'lost';
 
 export interface Deal {
   id: string;

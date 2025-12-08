@@ -57,5 +57,12 @@ export function deleteDeal(id: string): boolean {
 }
 
 export function calculateCommission(price: number, rate: number, share: number): number {
-  return (price * (rate / 100) * (share / 100));
+  // Calculate base commission
+  const baseCommission = price * (rate / 100);
+  
+  // Deduct 25% brokerage fee
+  const afterBrokerageFee = baseCommission * 0.75;
+  
+  // Apply agent's share
+  return afterBrokerageFee * (share / 100);
 }
