@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useMemo } from 'react';
 import { getDeals } from '@/app/actions';
 import { calculateCommission } from '@/lib/utils';
