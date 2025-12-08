@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# Check for environment variables
+if [ ! -f ".env" ] && [ ! -f ".env.local" ]; then
+    echo "❌ ERROR: No .env or .env.local file found!"
+    echo "This application requires environment variables to build correctly."
+    echo "Please upload your .env.local file to the server directory:"
+    echo "   $(pwd)"
+    exit 1
+fi
+
+# Validate values
+node scripts/check-env.js
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
 # Ensure dependencies are installed
 echo "Checking dependencies..."
 if [ ! -d "node_modules" ]; then

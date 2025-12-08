@@ -24,6 +24,7 @@ export default function LoginPage() {
             router.push('/');
         } catch (err: any) {
             console.error(err);
+
             setError('Invalid email or password. Please try again.');
         } finally {
             setLoading(false);
