@@ -21,9 +21,15 @@ export default function Dashboard() {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    getDeals().then(setDeals);
+    getDeals()
+      .then(setDeals)
+      .catch((err) => {
+        console.error('Failed to load deals:', err);
+        setError('Failed to load deals. Please check server logs for details.');
+      });
   }, []);
 
   const refreshDeals = async () => {
@@ -63,6 +69,18 @@ export default function Dashboard() {
 
   return (
     <div className="p-8 max-w-[1600px] mx-auto min-h-full">
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 flex items-center justify-between">
+          <span>{error}</span>
+          <button
+            onClick={() => setError(null)}
+            className="text-red-500 hover:text-red-700"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>

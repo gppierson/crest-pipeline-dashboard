@@ -1,0 +1,13 @@
+
+# Exclude git and build artifacts
+.git
+.gitignore
+.dockerignore
+.next
+node_modules
+
+# Exclude README and logs
+README.md
+npm-debug.log
+
+# We explicitly want to INCLUDE .env.local by NOT listing it here.

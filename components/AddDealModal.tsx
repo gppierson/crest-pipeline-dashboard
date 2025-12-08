@@ -28,7 +28,10 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
     notes: '',
   });
 
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
+    setError(null);
     if (deal) {
       setFormData({
         address: deal.address,
@@ -54,22 +57,33 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
-    if (deal) {
-      await updateDeal(deal.id, formData);
-    } else {
-      await createDeal(formData);
+    try {
+      if (deal) {
+        await updateDeal(deal.id, formData);
+      } else {
+        await createDeal(formData);
+      }
+
+      onSuccess();
+      onClose();
+    } catch (err) {
+      console.error('Failed to save deal:', err);
+      setError('Failed to save deal. Please try again.');
     }
-
-    onSuccess();
-    onClose();
   };
 
   const handleDelete = async () => {
     if (deal && window.confirm('Are you sure you want to delete this deal?')) {
-      await deleteDeal(deal.id);
-      onSuccess();
-      onClose();
+      try {
+        await deleteDeal(deal.id);
+        onSuccess();
+        onClose();
+      } catch (err) {
+        console.error('Failed to delete deal:', err);
+        setError('Failed to delete deal. Please try again.');
+      }
     }
   };
 
@@ -96,6 +110,11 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {error && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {error}
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               Property Address *

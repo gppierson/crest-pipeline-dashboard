@@ -7,10 +7,12 @@ import {
     Search,
 } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 export function Sidebar() {
     const { user, logout } = useAuth();
+    const pathname = usePathname();
     return (
         <aside className="w-64 border-r border-slate-200 bg-white flex flex-col h-full hidden md:flex shadow-soft">
             {/* Brand */}
@@ -41,16 +43,22 @@ export function Sidebar() {
             <nav className="flex-1 px-3 space-y-1">
                 <Link
                     href="/"
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-emerald-700 bg-emerald-50 rounded-lg border border-emerald-100/50"
+                    className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${pathname === '/'
+                        ? 'text-emerald-700 bg-emerald-50 border border-emerald-100/50'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent'
+                        }`}
                 >
-                    <LayoutDashboard className="w-4 h-4 text-emerald-500" />
+                    <LayoutDashboard className={`w-4 h-4 ${pathname === '/' ? 'text-emerald-500' : 'text-slate-400 group-hover:text-slate-600'}`} />
                     Pipeline
                 </Link>
                 <Link
                     href="/analytics"
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                    className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${pathname === '/analytics'
+                        ? 'text-emerald-700 bg-emerald-50 border border-emerald-100/50'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent'
+                        }`}
                 >
-                    <PieChart className="w-4 h-4" />
+                    <PieChart className={`w-4 h-4 ${pathname === '/analytics' ? 'text-emerald-500' : 'text-slate-400 group-hover:text-slate-600'}`} />
                     Analytics
                 </Link>
             </nav>
