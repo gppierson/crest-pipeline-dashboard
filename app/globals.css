@@ -4,34 +4,37 @@
 
 @layer base {
   :root {
-    --background: 3 7% 12%; /* #030712 */
-    --foreground: 210 40% 98%; /* #f9fafb */
-    
-    --card: 217 19% 27%;
-    --card-foreground: 210 40% 98%;
-    
-    --popover: 3 7% 12%;
-    --popover-foreground: 210 40% 98%;
-    
-    --primary: 151 55% 42%; /* #34D399 */
-    --primary-foreground: 3 7% 12%;
-    
-    --secondary: 217 19% 27%;
-    --secondary-foreground: 210 40% 98%;
-    
-    --muted: 217 19% 27%;
-    --muted-foreground: 215 20.2% 65.1%;
-    
-    --accent: 217 19% 27%;
-    --accent-foreground: 210 40% 98%;
-    
-    --destructive: 0 62.8% 30.6%;
+    --background: 210 40% 98%;
+    /* Slate 50 */
+    --foreground: 222.2 84% 4.9%;
+    /* Slate 900 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 151 55% 42%;
+    /* Emerald 600 */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217 19% 27%;
-    --input: 217 19% 27%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
     --ring: 151 55% 42%;
-    
+
     --radius: 0.75rem;
   }
 }
@@ -40,26 +43,23 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-[url('/grid.svg')] bg-fixed bg-cover bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
+    @apply bg-slate-50 text-foreground antialiased selection:bg-emerald-100 selection:text-emerald-900;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-lg;
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
   }
-  
+
   .glass-card {
-    @apply bg-gray-900/60 backdrop-blur-md border border-gray-800/50 hover:border-gray-700/50 hover:bg-gray-900/80 transition-all duration-300;
+    @apply bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300;
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400;
-  }
-  
-  .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700;
   }
 
   /* Custom Scrollbar */
@@ -67,30 +67,26 @@
     width: 6px;
     height: 6px;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-track {
-    @apply bg-gray-900/50 rounded-full;
+    @apply bg-slate-100 rounded-full;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-gray-700 rounded-full hover:bg-gray-600 transition-colors;
+    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply relative overflow-hidden bg-primary text-primary-foreground px-5 py-2.5 rounded-lg font-medium 
-    hover:opacity-90 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-emerald-900/20
-    after:absolute after:inset-0 after:bg-white/20 after:translate-y-full hover:after:translate-y-0 after:transition-transform after:duration-300;
-  }
-  
-  .btn-secondary {
-    @apply bg-gray-800/50 text-white border border-gray-700/50 px-5 py-2.5 rounded-lg font-medium 
-    hover:bg-gray-800 hover:border-gray-600 active:scale-[0.98] transition-all duration-200;
+    @apply relative overflow-hidden bg-primary text-white px-5 py-2.5 rounded-lg font-medium hover:opacity-90 active:scale-[0.98] transition-all duration-200 shadow-md shadow-emerald-500/20;
   }
 
-  .input-dark {
-    @apply bg-gray-900/50 border border-gray-800 text-white placeholder:text-gray-500 rounded-lg px-4 py-2.5
-    focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200;
+  .btn-secondary {
+    @apply bg-white text-slate-700 border border-slate-200 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] transition-all duration-200 shadow-sm;
+  }
+
+  .input-enhanced {
+    @apply bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 shadow-sm;
   }
 }

@@ -3,24 +3,24 @@
 import {
     LayoutDashboard,
     PieChart,
-    Settings,
     LogOut,
     Search,
-    User
 } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 export function Sidebar() {
+    const { user, logout } = useAuth();
     return (
-        <aside className="w-64 border-r border-white/10 bg-gray-900/50 backdrop-blur-xl flex flex-col h-full hidden md:flex">
+        <aside className="w-64 border-r border-slate-200 bg-white flex flex-col h-full hidden md:flex shadow-soft">
             {/* Brand */}
             <div className="p-6">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-900/20">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                         <span className="font-bold text-white">C</span>
                     </div>
-                    <span className="font-heading font-bold text-xl tracking-tight text-white">
-                        Crest<span className="text-emerald-400">.ai</span>
+                    <span className="font-heading font-bold text-xl tracking-tight text-slate-900">
+                        Crest <span className="text-emerald-500">Dashboard</span>
                     </span>
                 </div>
             </div>
@@ -28,11 +28,11 @@ export function Sidebar() {
             {/* Search */}
             <div className="px-4 mb-6">
                 <div className="relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-emerald-400 transition-colors" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-emerald-500 transition-colors" />
                     <input
                         type="text"
                         placeholder="Search deals..."
-                        className="w-full bg-black/20 border border-white/5 rounded-lg pl-9 pr-4 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-4 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                     />
                 </div>
             </div>
@@ -41,45 +41,36 @@ export function Sidebar() {
             <nav className="flex-1 px-3 space-y-1">
                 <Link
                     href="/"
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-white bg-white/5 rounded-lg border border-white/5"
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-emerald-700 bg-emerald-50 rounded-lg border border-emerald-100/50"
                 >
-                    <LayoutDashboard className="w-4 h-4 text-emerald-400" />
+                    <LayoutDashboard className="w-4 h-4 text-emerald-500" />
                     Pipeline
                 </Link>
                 <Link
-                    href="#"
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                    href="/analytics"
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
                 >
                     <PieChart className="w-4 h-4" />
                     Analytics
                 </Link>
-                <Link
-                    href="#"
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-                >
-                    <User className="w-4 h-4" />
-                    Team
-                </Link>
-                <Link
-                    href="#"
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-                >
-                    <Settings className="w-4 h-4" />
-                    Settings
-                </Link>
             </nav>
 
             {/* User Actions */}
-            <div className="p-4 border-t border-white/5">
-                <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 transition-colors group">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-xs font-bold text-white ring-2 ring-black">
-                        GP
+            <div className="p-4 border-t border-slate-200">
+                <button
+                    onClick={() => logout()}
+                    className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-slate-50 transition-colors group"
+                >
+                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-700 ring-2 ring-white shadow-sm border border-slate-200">
+                        {user?.email?.substring(0, 2).toUpperCase() || 'GP'}
                     </div>
                     <div className="flex-1 text-left">
-                        <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">Garrett Pierson</p>
-                        <p className="text-xs text-gray-500">Pro Plan</p>
+                        <p className="text-sm font-medium text-slate-900 group-hover:text-emerald-600 transition-colors truncate w-32">
+                            {user?.email || 'Guest User'}
+                        </p>
+                        <p className="text-xs text-slate-500">Pro Plan</p>
                     </div>
-                    <LogOut className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                    <LogOut className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors" />
                 </button>
             </div>
         </aside>

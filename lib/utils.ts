@@ -21,3 +21,14 @@ export function formatDate(date: string): string {
     year: 'numeric',
   });
 }
+
+export function calculateCommission(price: number, rate: number, share: number): number {
+  // Calculate base commission
+  const baseCommission = price * (rate / 100);
+
+  // Deduct 25% brokerage fee
+  const afterBrokerageFee = baseCommission * 0.75;
+
+  // Apply agent's share
+  return afterBrokerageFee * (share / 100);
+}

@@ -3,7 +3,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Plus, Target, TrendingUp, CheckCircle2, DollarSign, Briefcase } from 'lucide-react';
 import { Deal, DealStatus } from '@/types/deal';
-import { getDeals, calculateCommission } from '@/lib/storage';
+import { getDeals } from '@/app/actions';
+import { calculateCommission } from '@/lib/utils';
 import { formatCurrency } from '@/lib/utils';
 import { PipelineColumn } from '@/components/PipelineColumn';
 import { AddDealModal } from '@/components/AddDealModal';
@@ -22,11 +23,12 @@ export default function Dashboard() {
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
 
   useEffect(() => {
-    setDeals(getDeals());
+    getDeals().then(setDeals);
   }, []);
 
-  const refreshDeals = () => {
-    setDeals(getDeals());
+  const refreshDeals = async () => {
+    const freshDeals = await getDeals();
+    setDeals(freshDeals);
   };
 
   const metrics = useMemo(() => {
@@ -44,12 +46,18 @@ export default function Dashboard() {
       sum + calculateCommission(deal.listing_price, deal.commission_rate, deal.my_share), 0
     );
 
+    const underContractDeals = deals.filter(d => d.status === 'under-contract');
+    const totalUnderContract = underContractDeals.reduce((sum, deal) =>
+      sum + calculateCommission(deal.listing_price, deal.commission_rate, deal.my_share), 0
+    );
+
     return {
       totalDeals: deals.length,
       activeDeals: activeDeals.length,
       wonDeals: wonDeals.length,
       totalPipeline,
       totalClosed,
+      totalUnderContract,
     };
   }, [deals]);
 
@@ -58,10 +66,10 @@ export default function Dashboard() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-bold text-white tracking-tight">
+          <h1 className="text-3xl font-heading font-bold text-slate-900 tracking-tight">
             Dashboard
           </h1>
-          <p className="text-gray-400 mt-1">Welcome back, here&apos;s what&apos;s happening today.</p>
+          <p className="text-slate-500 mt-1">Welcome back, here&apos;s what&apos;s happening today.</p>
         </div>
         <button
           onClick={() => {
@@ -76,13 +84,13 @@ export default function Dashboard() {
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         <MetricsCard
           title="Total Deals"
           value={metrics.totalDeals.toString()}
-          color="text-gray-400"
+          color="text-slate-400"
           icon={Briefcase}
-          gradient="bg-gray-500"
+          gradient="bg-slate-500"
         />
         <MetricsCard
           title="Active Deals"
@@ -101,8 +109,15 @@ export default function Dashboard() {
         <MetricsCard
           title="Pipeline Value"
           value={formatCurrency(metrics.totalPipeline)}
-          color="text-amber-400"
+          color="text-blue-400"
           icon={TrendingUp}
+          gradient="bg-blue-500"
+        />
+        <MetricsCard
+          title="Under Contract"
+          value={formatCurrency(metrics.totalUnderContract)}
+          color="text-amber-400"
+          icon={Briefcase}
           gradient="bg-amber-500"
         />
         <MetricsCard
