@@ -68,7 +68,7 @@ export default function Dashboard() {
   }, [deals]);
 
   return (
-    <div className="p-8 max-w-[1600px] mx-auto min-h-full">
+    <div className="p-4 md:p-8 max-w-[1600px] mx-auto min-h-full">
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 flex items-center justify-between">
           <span>{error}</span>
@@ -102,7 +102,7 @@ export default function Dashboard() {
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 mb-6 md:mb-8">
         <MetricsCard
           title="Total Deals"
           value={metrics.totalDeals.toString()}

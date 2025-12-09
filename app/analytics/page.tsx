@@ -78,7 +78,7 @@ export default function AnalyticsPage() {
     const totalClosedWon = closedWonStats.reduce((sum, stat) => sum + stat.total, 0);
 
     return (
-        <div className="p-8 max-w-[1200px] mx-auto space-y-8">
+        <div className="p-4 md:p-8 max-w-[1200px] mx-auto space-y-6 md:space-y-8">
             <div>
                 <h1 className="text-3xl font-heading font-bold text-slate-900 tracking-tight">
                     Analytics
@@ -87,7 +87,7 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <div className="flex items-center gap-4 mb-2">
                         <div className="p-3 bg-emerald-50 rounded-xl">
