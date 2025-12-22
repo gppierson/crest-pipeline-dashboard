@@ -2,6 +2,7 @@ export type DealStatus =
   | 'listed'
   | 'under-contract'
   | 'closed-won'
+  | 'paid'
   | 'lost';
 
 export interface Deal {
@@ -14,6 +15,7 @@ export interface Deal {
   status: DealStatus;
   estimated_close_date?: string;
   actual_close_date?: string;
+  paid_date?: string;
   notes?: string;
   created_at: string;
   updated_at: string;
@@ -27,5 +29,6 @@ export interface DealFormData {
   status: DealStatus;
   estimated_close_date?: string;
   actual_close_date?: string;
+  paid_date?: string;
   notes?: string;
 }

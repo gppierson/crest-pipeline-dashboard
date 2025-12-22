@@ -60,7 +60,13 @@ export function DealCard({ deal, onClick }: DealCardProps) {
         </div>
 
         {/* Close date with urgency indicator */}
-        {deal.estimated_close_date && (
+        {/* Close date / Paid Date with urgency indicator */}
+        {deal.status === 'paid' && deal.paid_date ? (
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] uppercase tracking-wider font-bold bg-emerald-50 border-emerald-200 text-emerald-600 border">
+            <Calendar className="w-3 h-3" />
+            <span>{formatDate(deal.paid_date)}</span>
+          </div>
+        ) : deal.estimated_close_date && (
           <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] uppercase tracking-wider font-bold ${urgency ? urgencyColors[urgency] : 'bg-slate-50 border-slate-200 text-slate-500'
             } border`}>
             {urgency === 'urgent' ? (

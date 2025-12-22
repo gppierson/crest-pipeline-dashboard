@@ -14,6 +14,7 @@ const STATUS_OPTIONS: { value: DealStatus; label: string }[] = [
   { value: 'listed', label: 'Listed' },
   { value: 'under-contract', label: 'Under Contract' },
   { value: 'closed-won', label: 'Closed Won' },
+  { value: 'paid', label: 'Paid' },
   { value: 'lost', label: 'Lost' },
 ];
 
@@ -26,6 +27,7 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
     status: 'listed',
     estimated_close_date: '',
     actual_close_date: '',
+    paid_date: '',
     notes: '',
   });
 
@@ -42,6 +44,7 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
         status: deal.status,
         estimated_close_date: deal.estimated_close_date || '',
         actual_close_date: deal.actual_close_date || '',
+        paid_date: deal.paid_date || '',
         notes: deal.notes || '',
       });
     } else {
@@ -53,6 +56,7 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
         status: 'listed',
         estimated_close_date: '',
         actual_close_date: '',
+        paid_date: '',
         notes: '',
       });
     }
@@ -226,6 +230,32 @@ export function AddDealModal({ isOpen, onClose, deal, onSuccess }: AddDealModalP
                   className="input-enhanced w-full"
                 />
               </div>
+            )}
+            {formData.status === 'paid' && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Actual Close Date
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.actual_close_date || ''}
+                    onChange={(e) => setFormData({ ...formData, actual_close_date: e.target.value })}
+                    className="input-enhanced w-full"
+                  />
+                </div>
+                <div className="mt-4 col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Paid Date
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.paid_date || ''}
+                    onChange={(e) => setFormData({ ...formData, paid_date: e.target.value })}
+                    className="input-enhanced w-full"
+                  />
+                </div>
+              </>
             )}
           </div>
 

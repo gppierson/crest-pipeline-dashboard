@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Plus, Target, TrendingUp, CheckCircle2, DollarSign, Briefcase } from 'lucide-react';
+import { Plus, Target, TrendingUp, CheckCircle2, DollarSign, Briefcase, Wallet } from 'lucide-react';
 import { Deal, DealStatus } from '@/types/deal';
 import { getDeals } from '@/app/actions';
 import { calculateCommission } from '@/lib/utils';
@@ -14,6 +14,7 @@ const PIPELINE_STAGES: { status: DealStatus; label: string; color: string; gradi
   { status: 'listed', label: 'Listed', color: 'text-blue-400', gradient: 'bg-blue-500' },
   { status: 'under-contract', label: 'Under Contract', color: 'text-amber-400', gradient: 'bg-amber-500' },
   { status: 'closed-won', label: 'Closed Won', color: 'text-emerald-400', gradient: 'bg-emerald-500' },
+  { status: 'paid', label: 'Paid', color: 'text-emerald-400', gradient: 'bg-emerald-500' },
   { status: 'lost', label: 'Lost', color: 'text-red-400', gradient: 'bg-red-500' },
 ];
 
@@ -39,10 +40,10 @@ export default function Dashboard() {
 
   const metrics = useMemo(() => {
     const activeDeals = deals.filter(d =>
-      !['closed-won', 'lost'].includes(d.status)
+      !['closed-won', 'lost', 'paid'].includes(d.status)
     );
 
-    const wonDeals = deals.filter(d => d.status === 'closed-won');
+    const wonDeals = deals.filter(d => ['closed-won', 'paid'].includes(d.status));
 
     const totalPipeline = activeDeals.reduce((sum, deal) =>
       sum + calculateCommission(deal.listing_price, deal.commission_rate, deal.my_share), 0
@@ -139,10 +140,10 @@ export default function Dashboard() {
           gradient="bg-amber-500"
         />
         <MetricsCard
-          title="Closed Value"
+          title="Total Commission"
           value={formatCurrency(metrics.totalClosed)}
           color="text-emerald-400"
-          icon={DollarSign}
+          icon={Wallet}
           gradient="bg-emerald-500"
         />
       </div>
